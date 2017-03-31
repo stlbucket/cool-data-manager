@@ -7,7 +7,7 @@ const GetAll = require('./getAll');
 const UpdateOrCreate = require('./updateOrCreate');
 const UpdateOrCreateBatch = require('./updateOrCreateBatch');
 
-class graphCoolEntityManager{
+class CoolDataManager{
   constructor(entityInfo, client, options){
     this.entityInfo = entityInfo;
     this.client = new ClientWrapper(client, options);
@@ -60,4 +60,4 @@ class graphCoolEntityManager{
 
 }
 
-module.exports = graphCoolEntityManager;
+module.exports = CoolDataManager;

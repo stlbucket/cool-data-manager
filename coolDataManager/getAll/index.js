@@ -25,10 +25,8 @@ class GetAll {
   }
 
   buildQuery() {
-    const fields = this.options.getFields || this.entityInfo.fields;
-
     return Promise.props({
-      output: buildOutputFieldList(fields, this.options)
+      output: buildOutputFieldList(this.entityInfo.fields, this.options)
     })
       .then(fields => {
         return `{

@@ -29,7 +29,7 @@ class UpdateOrCreate {
   buildMutation(entity) {
     return Promise.props({
       input: buildInputFieldList(this.entityInfo.fields, entity),
-      output: buildOutputFieldList(this.entityInfo.fields)
+      output: buildOutputFieldList(this.entityInfo.fields, this.options)
     })
       .then(fields => {
         return `

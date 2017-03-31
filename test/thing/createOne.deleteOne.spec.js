@@ -17,6 +17,9 @@ describe(__filename, function () {
       floatData: 1.2345,
       booleanData: true,
       dateTimeData: moment.utc().format(),
+      otherThing: {
+        stringData: 'OTHER THING DATA'
+      }
       // jsonData: {
       //   id: 1,
       //   child: {

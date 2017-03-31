@@ -1,5 +1,9 @@
 const CoolDataManager = require('../../coolDataManager');
+const CoolRelation = require('../../coolRelation');
+
 const client = require('../client');
+
+const OtherThing = require('../otherThing');
 
 const entityInfo = {
   entityName: 'Thing',
@@ -28,6 +32,9 @@ const entityInfo = {
     dateTimeData: {
       type: 'dateTime'
     },
+    otherThing: {
+      type: new CoolRelation(OtherThing)
+    }
     // jsonData: {
     //   type: 'json'
     // }

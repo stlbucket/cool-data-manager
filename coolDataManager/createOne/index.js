@@ -14,9 +14,11 @@ class CreateOne{
   _method(entity){
     return Promise.resolve(this.buildMutation(entity))
       .then(mutation => {
+        // console.log('mutation', mutation);
         return this.client.mutate(`{${mutation}}`, this.options)
       })
       .then(result => {
+        // console.log('result', result);
         return result[`create${this.entityInfo.entityName}`];
       })
       .catch(error => {
@@ -31,7 +33,7 @@ class CreateOne{
   buildMutation(entity){
     return Promise.props({
       input: buildInputFieldList(this.entityInfo.fields, entity),
-      output: buildOutputFieldList(this.entityInfo.fields)
+      output: buildOutputFieldList(this.entityInfo.fields, this.options)
     })
       .then(fields => {
         return `
