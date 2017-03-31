@@ -1,1 +1,1 @@
-module.exports = require('./coolDataManager');
+module.exports = require('./src/coolDataManager');

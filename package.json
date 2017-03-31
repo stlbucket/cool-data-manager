@@ -1,31 +1,19 @@
 {
   "name": "cool-data-manager",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test/**/spec.js ./test/**/*.spec.js"
   },
   "dependencies": {
-    "axios": "^0.15.3",
     "bluebird": "^3.5.0",
-    "body-parser": "~1.16.0",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.0",
-    "express": "~4.14.1",
     "fbkt-clog": "^1.0.1",
-    "jade": "~1.11.0",
-    "lokka": "^1.7.0",
-    "lokka-transport-http": "^1.6.1",
-    "minimist": "^1.2.0",
-    "moment": "^2.18.1",
-    "morgan": "~1.7.0",
-    "pluralize": "^4.0.0",
-    "ramda": "^0.23.0",
-    "serve-favicon": "~2.3.2"
+    "lokka": "^1.7.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "expect": "^1.20.2"
+    "expect": "^1.20.2",
+    "lokka-transport-http": "^1.6.1"
   }
 }

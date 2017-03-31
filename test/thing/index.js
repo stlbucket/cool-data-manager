@@ -1,6 +1,6 @@
-const CoolDataManager = require('../../coolDataManager');
-const CoolRelation = require('../../coolRelation');
-const CoolCollection = require('../../coolCollection');
+const CoolDataManager = require('../../src/coolDataManager');
+const CoolRelation = require('../../src/coolRelation');
+const CoolCollection = require('../../src/coolCollection');
 
 const client = require('../client');
 

@@ -1,4 +1,4 @@
-const CoolDataManager = require('../../coolDataManager');
+const CoolDataManager = require('../../src/coolDataManager');
 const client = require('../client');
 
 const entityInfo = {
