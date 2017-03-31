@@ -2,17 +2,18 @@ const Promise = require('bluebird');
 const clog = require('fbkt-clog');
 
 class DeleteBatch {
-  constructor(entityInfo, client, deleteOne) {
+  constructor(entityInfo, client, deleteOne, options) {
     this.entityInfo = entityInfo;
     this.client     = client;
     this.deleteOne = deleteOne;
+    this.options = options;
   }
 
   _method(entities) {
     if ((entities || []).length > 0){
       return this.applyTemplate(entities)
         .then(mutation => {
-          return this.client.mutate(mutation)
+          return this.client.mutate(mutation, this.options)
         })
         .then(result => {
           return Object.values(result);

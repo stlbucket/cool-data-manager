@@ -76,7 +76,10 @@ describe.only('cool thing', function () {
         expect(thing2).to.be.an('object');
         expect(thing2.stringData).to.equal(testId2);
 
-        return entityManager.getAll()
+        return entityManager.getAll({
+          verbose:  true,
+          getFields:  [ 'stringRequired', 'intData', 'stringData' ]
+        })
           .then(result => {
             // clog('GET ALL RESULT', result);
             expect(result).to.be.an('array');
@@ -194,7 +197,7 @@ describe.only('cool thing', function () {
       })
   });
 
-  it.only('should create one thing with all null data fields and delete it', function (done) {
+  it('should create one thing with all null data fields and delete it', function (done) {
     this.timeout(10000);
     const testId = uuid.v4();
 

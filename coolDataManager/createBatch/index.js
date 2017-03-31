@@ -2,17 +2,18 @@ const Promise = require('bluebird');
 const clog = require('fbkt-clog');
 
 class CreateBatch {
-  constructor(entityInfo, client, createOne) {
+  constructor(entityInfo, client, createOne, options) {
     this.entityInfo = entityInfo;
     this.client     = client;
     this.createOne = createOne;
+    this.options = options;
   }
 
   _method(entities) {
     if ((entities || []).length > 0) {
       return this.applyTemplate(entities)
       .then(mutation => {
-        return this.client.mutate(mutation)
+        return this.client.mutate(mutation, this.options)
       })
       .then(result => {
         return Object.values(result);

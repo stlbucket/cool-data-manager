@@ -2,11 +2,15 @@ const Promise = require('bluebird');
 
 function buildOutputList(fields)
 {
-  return Promise.map(
-    Object.keys(fields),
-    fieldName => {
-      return `${fieldName},`;
-    }
+  const fieldsArray = fields instanceof Array ? fields : Object.keys(fields);
+
+  return Promise.reduce(
+    fieldsArray,
+    (acc, fieldName) => {
+      return acc.concat(`   ${fieldName},
+      `);
+    },
+    ''
   );
 }
 

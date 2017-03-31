@@ -42,7 +42,7 @@ class graphCoolEntityManager{
   deleteAll(options) {
     return this.getAll(options)
       .then(allEntities => {
-        return this.deleteBatch(allEntities);
+        return this.deleteBatch(allEntities, options);
       })
   }
 

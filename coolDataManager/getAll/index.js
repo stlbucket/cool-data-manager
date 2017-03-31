@@ -3,16 +3,17 @@ const clog = require('fbkt-clog');
 const buildOutputFieldList = require('../fields/buildOutputList');
 
 class GetAll {
-  constructor(entityInfo, client) {
+  constructor(entityInfo, client, options) {
     this.entityInfo = entityInfo;
     this.client     = client;
+    this.options = options || {};
   }
 
   _method() {
 
     return this.buildQuery()
       .then(query => {
-        return this.client.query(query)
+        return this.client.query(query, this.options)
       })
       .then(result => {
         return Object.values(result)[0];
@@ -24,8 +25,13 @@ class GetAll {
   }
 
   buildQuery() {
+    const fields = this.options.getFields || this.entityInfo.fields;
+    clog('this.entityInfo', this.entityInfo);
+    clog('this.options', this.options);
+    clog('fields', this.fields);
+
     return Promise.props({
-      output: buildOutputFieldList(this.entityInfo.fields)
+      output: buildOutputFieldList(fields, this.options)
     })
       .then(fields => {
         return `{

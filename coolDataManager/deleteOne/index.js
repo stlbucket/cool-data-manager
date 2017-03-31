@@ -2,15 +2,16 @@ const Promise = require('bluebird');
 const clog      = require('fbkt-clog');
 
 class DeleteOne {
-  constructor(entityInfo, client) {
+  constructor(entityInfo, client, options) {
     this.entityInfo = entityInfo;
     this.client = client;
+    this.options = options;
   }
 
   _method(entity) {
     return this.buildMutation(entity)
       .then(mutation => {
-        return this.client.mutate(`{${mutation}}`)
+        return this.client.mutate(`{${mutation}}`, this.options)
       })
       .then(result => {
         return Object.values(result)[0];
