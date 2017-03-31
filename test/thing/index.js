@@ -1,4 +1,4 @@
-const EntityManager = require('../../entityManager');
+const CoolDataManager = require('../../coolDataManager');
 const client = require('../client');
 
 const entityInfo = {
@@ -34,6 +34,6 @@ const entityInfo = {
   }
 };
 
-const entityManager = new EntityManager(entityInfo, client);
+const entityManager = new CoolDataManager(entityInfo, client);
 
 module.exports = entityManager;

@@ -1,3 +1,4 @@
+const ClientWrapper = require('./clientWrapper');
 const CreateOne = require('./createOne');
 const DeleteOne = require('./deleteOne');
 const CreateBatch = require('./createBatch');
@@ -6,9 +7,9 @@ const GetAll = require('./getAll');
 const UpdateOrCreate = require('./updateOrCreate');
 
 class graphCoolEntityManager{
-  constructor(entityInfo, client){
+  constructor(entityInfo, client, options){
     this.entityInfo = entityInfo;
-    this.client = client;
+    this.client = new ClientWrapper(client, options);
   }
 
   createOne(entity){
