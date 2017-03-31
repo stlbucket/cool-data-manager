@@ -28,7 +28,9 @@ describe(__filename, function () {
       // }
     };
 
-    entityManager.createOne(testEntity)
+    entityManager.createOne(testEntity, {
+      verbose: true
+    })
       .then(thing => {
         // clog('THING', thing);
         expect(thing).to.be.an('object');
