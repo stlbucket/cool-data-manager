@@ -1,7 +1,7 @@
 class CoolCollection{
-  constructor(entityType){
-    this.entityType = entityType;
+  constructor(coolDataManager){
+    this.coolDataManager = coolDataManager;
   }
-
-
 }
+
+module.exports = CoolCollection;

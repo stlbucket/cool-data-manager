@@ -19,7 +19,15 @@ describe(__filename, function () {
       dateTimeData: moment.utc().format(),
       otherThing: {
         stringData: 'OTHER THING DATA'
-      }
+      },
+      yetAnotherThings: [
+        {
+          stringData: 'YET MORE'
+        },
+        {
+          stringData: 'Still Yet MOre evEN'
+        }
+      ]
       // jsonData: {
       //   id: 1,
       //   child: {
@@ -32,7 +40,7 @@ describe(__filename, function () {
       verbose: true
     })
       .then(thing => {
-        // clog('THING', thing);
+        clog('THING', thing);
         expect(thing).to.be.an('object');
         expect(thing.stringData).to.equal(testEntity.stringData);
         expect(thing.intData).to.equal(testEntity.intData);
@@ -40,6 +48,8 @@ describe(__filename, function () {
         expect(thing.floatData).to.equal(testEntity.floatData);
         expect(thing.booleanData).to.equal(testEntity.booleanData);
         expect(moment.utc(thing.dateTimeData).format()).to.equal(testEntity.dateTimeData);
+        expect(thing.otherThing).to.be.an('object');
+        expect(thing.otherThing.stringData).to.equal(testEntity.otherThing.stringData);
         // expect(thing.jsonData.id).to.equal(testEntity.jsonData.id);
         // expect(thing.jsonData.child.id).to.equal(testEntity.jsonData.child.id);
         // clog('CREATE ONE RESULT', thing);

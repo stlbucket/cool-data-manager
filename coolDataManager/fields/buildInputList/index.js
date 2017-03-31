@@ -2,6 +2,7 @@ const Promise = require('bluebird');
 const validateRequiredFields = require('./validateRequiredFields');
 const valueWrappers = require('./valueWrappers');
 const CoolRelation = require('../../../coolRelation');
+const CoolCollection = require('../../../coolCollection');
 
 function buildInputList(fields, entity) {
   return validateRequiredFields(fields, entity)
@@ -24,8 +25,28 @@ function buildInputList(fields, entity) {
                   .then(subQuery => {
                     return acc.concat(`${fieldName}: {
                       ${subQuery}
-                    }`);
+                    },
+                    `);
                   })
+              } else if (type instanceof CoolCollection) {
+                const subEntityInfo = type.coolDataManager.entityInfo;
+                return Promise.mapSeries(
+                  entity[fieldName],
+                  subEntity => {
+                    return buildInputList(subEntityInfo.fields, subEntity)
+                      .then(subEntity => {
+                        return `{
+                          ${subEntity}
+                        },`
+                      })
+                  }
+                )
+                  .then(subQuery => {
+                    return acc.concat(`${fieldName}: [
+                          ${subQuery}
+                        ],
+                        `);
+                  });
               } else {
                 const value = valueWrappers[type](entity[fieldName]);
                 return Promise.resolve(acc.concat(`${fieldName}: ${value},
