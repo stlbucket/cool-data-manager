@@ -12,42 +12,42 @@ class graphCoolEntityManager{
     this.client = new ClientWrapper(client, options);
   }
 
-  createOne(entity){
-    const createOne = new CreateOne(this.entityInfo, this.client);
+  createOne(entity, options){
+    const createOne = new CreateOne(this.entityInfo, this.client, options);
     return createOne._method(entity);
   }
 
-  deleteOne(entity) {
-    const deleteOne = new DeleteOne(this.entityInfo, this.client);
+  deleteOne(entity, options) {
+    const deleteOne = new DeleteOne(this.entityInfo, this.client, options);
     return deleteOne._method(entity);
   }
 
-  createBatch(entities){
-    const createOne = new CreateOne(this.entityInfo, this.client);
-    const createBatch = new CreateBatch(this.entityInfo, this.client, createOne.buildMutation);
+  createBatch(entities, options){
+    const createOne = new CreateOne(this.entityInfo, this.client, options);
+    const createBatch = new CreateBatch(this.entityInfo, this.client, createOne.buildMutation, options);
     return createBatch._method(entities);
   }
 
-  deleteBatch(entities) {
-    const deleteOne = new DeleteOne(this.entityInfo, this.client);
-    const deleteBatch = new DeleteBatch(this.entityInfo, this.client, deleteOne.buildMutation);
+  deleteBatch(entities, options) {
+    const deleteOne = new DeleteOne(this.entityInfo, this.client, options);
+    const deleteBatch = new DeleteBatch(this.entityInfo, this.client, deleteOne.buildMutation, options);
     return deleteBatch._method(entities);
   }
 
-  getAll() {
-    const getAll = new GetAll(this.entityInfo, this.client);
+  getAll(options) {
+    const getAll = new GetAll(this.entityInfo, this.client, options);
     return getAll._method();
   }
 
-  deleteAll() {
-    return this.getAll()
+  deleteAll(options) {
+    return this.getAll(options)
       .then(allEntities => {
         return this.deleteBatch(allEntities);
       })
   }
 
-  updateOrCreate(thing) {
-    const updateOrCreate = new UpdateOrCreate(this.entityInfo, this.client);
+  updateOrCreate(thing, options) {
+    const updateOrCreate = new UpdateOrCreate(this.entityInfo, this.client, options);
     return updateOrCreate._method(thing);
   }
 

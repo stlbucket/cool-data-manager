@@ -6,15 +6,21 @@ class ClientWrapper{
     this.options = options || {};
   }
 
-  query(query){
-    if (this.options.verbose === true) {
+  query(query, options){
+    if (
+      (options || {verbose: false}).verbose === true ||
+      (this.options.verbose === true && (options || {verbose: false}).verbose !== false)
+    ) {
       clog('EXECUTING GRAPH COOL QUERY', query);
     }
     return this.client.query(query);
   }
 
-  mutate(mutation) {
-    if (this.options.verbose === true) {
+  mutate(mutation, options) {
+    if (
+      (options || { verbose: false }).verbose === true ||
+      (this.options.verbose === true && (options || { verbose: false }).verbose !== false)
+    ) {
       clog('EXECUTING GRAPH COOL MUTATION', mutation);
     }
     return this.client.mutate(mutation);

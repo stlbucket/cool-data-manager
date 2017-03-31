@@ -194,13 +194,13 @@ describe.only('cool thing', function () {
       })
   });
 
-  it('should create one thing with all null data fields and delete it', function (done) {
+  it.only('should create one thing with all null data fields and delete it', function (done) {
     this.timeout(10000);
     const testId = uuid.v4();
 
     entityManager.createOne({
-      stringRequired: testId,
-    })
+      stringRequired: testId
+    }, { verbose: true })
       .then(thing => {
         expect(thing).to.be.an('object');
         expect(thing.stringRequired).to.equal(testId);
@@ -208,7 +208,7 @@ describe.only('cool thing', function () {
         expect(thing.intData).to.equal(null);
         // clog('CREATE ONE RESULT', thing);
 
-        return entityManager.deleteOne(thing)
+        return entityManager.deleteOne(thing, {verbose: false})
           .then(result => {
             expect(result).to.be.an('object');
             expect(result.id).to.equal(thing.id);

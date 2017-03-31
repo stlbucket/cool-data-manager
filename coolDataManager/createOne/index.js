@@ -5,15 +5,16 @@ const buildInputFieldList  = require('../fields/buildInputList');
 const buildOutputFieldList = require('../fields/buildOutputList');
 
 class CreateOne{
-  constructor(entityInfo, client){
+  constructor(entityInfo, client, options){
     this.entityInfo = entityInfo;
     this.client = client;
+    this.options = options || {};
   }
 
   _method(entity){
     return Promise.resolve(this.buildMutation(entity))
       .then(mutation => {
-        return this.client.mutate(`{${mutation}}`)
+        return this.client.mutate(`{${mutation}}`, this.options)
       })
       .then(result => {
         return result[`create${this.entityInfo.entityName}`];
