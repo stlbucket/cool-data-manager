@@ -9,7 +9,8 @@ class CreateBatch {
   }
 
   _method(entities) {
-    return this.applyTemplate(entities)
+    if ((entities || []).length > 0) {
+      return this.applyTemplate(entities)
       .then(mutation => {
         return this.client.mutate(mutation)
       })
@@ -23,6 +24,9 @@ class CreateBatch {
         });
         throw error;
       });
+    } else {
+      return Promise.resolve([]);
+    }
   }
 
   applyTemplate(entities) {

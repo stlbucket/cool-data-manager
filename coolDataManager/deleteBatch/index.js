@@ -9,20 +9,24 @@ class DeleteBatch {
   }
 
   _method(entities) {
-    return this.applyTemplate(entities)
-      .then(mutation => {
-        return this.client.mutate(mutation)
-      })
-      .then(result => {
-        return Object.values(result);
-      })
-      .catch(error => {
-        clog.error(`Unable to delete ${this.entityInfo.entityName} batch`, {
-          [this.entityInfo.entityName]: entities,
-          error: error
+    if ((entities || []).length > 0){
+      return this.applyTemplate(entities)
+        .then(mutation => {
+          return this.client.mutate(mutation)
+        })
+        .then(result => {
+          return Object.values(result);
+        })
+        .catch(error => {
+          clog.error(`Unable to delete ${this.entityInfo.entityName} batch`, {
+            [this.entityInfo.entityName]: entities,
+            error: error
+          });
+          throw error;
         });
-        throw error;
-      });
+    } else {
+      return Promise.resolve([]);
+    }
   }
 
   applyTemplate(entities) {
