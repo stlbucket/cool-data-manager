@@ -26,9 +26,6 @@ class GetAll {
 
   buildQuery() {
     const fields = this.options.getFields || this.entityInfo.fields;
-    clog('this.entityInfo', this.entityInfo);
-    clog('this.options', this.options);
-    clog('fields', this.fields);
 
     return Promise.props({
       output: buildOutputFieldList(fields, this.options)

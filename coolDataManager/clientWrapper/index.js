@@ -21,6 +21,8 @@ class ClientWrapper{
       (options || { verbose: false }).verbose === true ||
       (this.options.verbose === true && (options || { verbose: false }).verbose !== false)
     ) {
+      console.log('options', options);
+      console.log('this.options', this.options);
       clog('EXECUTING GRAPH COOL MUTATION', mutation);
     }
     return this.client.mutate(mutation);

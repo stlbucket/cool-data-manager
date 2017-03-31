@@ -5,6 +5,7 @@ const CreateBatch = require('./createBatch');
 const DeleteBatch = require('./deleteBatch');
 const GetAll = require('./getAll');
 const UpdateOrCreate = require('./updateOrCreate');
+const UpdateOrCreateBatch = require('./updateOrCreateBatch');
 
 class graphCoolEntityManager{
   constructor(entityInfo, client, options){
@@ -49,6 +50,12 @@ class graphCoolEntityManager{
   updateOrCreate(thing, options) {
     const updateOrCreate = new UpdateOrCreate(this.entityInfo, this.client, options);
     return updateOrCreate._method(thing);
+  }
+
+  updateOrCreateBatch(entities, options) {
+    const updateOrCreate   = new UpdateOrCreate(this.entityInfo, this.client, options);
+    const updateOrCreateBatch = new UpdateOrCreateBatch(this.entityInfo, this.client, updateOrCreate.buildMutation, options);
+    return updateOrCreateBatch._method(entities);
   }
 
 }

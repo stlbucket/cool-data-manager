@@ -34,6 +34,6 @@ const entityInfo = {
   }
 };
 
-const entityManager = new CoolDataManager(entityInfo, client, { verbose: true });
+const entityManager = new CoolDataManager(entityInfo, client, { verbose: false });
 
 module.exports = entityManager;
