@@ -221,4 +221,20 @@ describe.only('cool thing', function () {
       })
   });
 
+  it('should throw an error when missing required field', function (done) {
+    this.timeout(10000);
+    const testId = uuid.v4();
+
+    entityManager.createOne({
+      intData: 44
+    })
+      .then(thing => {
+        done('EXPECTED ERROR BUT GOT RESULT')
+      })
+      .catch(error => {
+        expect(error).to.be.an('error');
+        done();
+      })
+  });
+
 });

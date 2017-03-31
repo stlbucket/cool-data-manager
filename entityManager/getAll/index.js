@@ -1,5 +1,6 @@
+const Promise = require('bluebird');
 const clog = require('fbkt-clog');
-const fieldList = require('../fieldList');
+const buildOutputFieldList = require('../fields/buildOutputList');
 
 class GetAll {
   constructor(entityInfo, client) {
@@ -8,8 +9,11 @@ class GetAll {
   }
 
   _method() {
-    const query = this.buildQuery();
-    return this.client.query(query)
+
+    return this.buildQuery()
+      .then(query => {
+        return this.client.query(query)
+      })
       .then(result => {
         return Object.values(result)[0];
       })
@@ -20,14 +24,20 @@ class GetAll {
   }
 
   buildQuery() {
-    return `{
+    return Promise.props({
+      output: buildOutputFieldList(this.entityInfo.fields)
+    })
+      .then(fields => {
+        return `{
     all${this.entityInfo.entityNamePlural} {
         id,
         createdAt,
         updatedAt,
-        ${fieldList.out(this.entityInfo.fields)}
+        ${fields.output}
       },
-    }`
+    }
+`
+      })
   }
 }
 

@@ -1,3 +1,4 @@
+const Promise = require('bluebird');
 const clog      = require('fbkt-clog');
 
 class DeleteOne {
@@ -7,12 +8,10 @@ class DeleteOne {
   }
 
   _method(entity) {
-    const mutation = `{
-        ${this.buildMutation(entity)}
-     }
-    `;
-
-    return this.client.mutate(mutation)
+    return this.buildMutation(entity)
+      .then(mutation => {
+        return this.client.mutate(`{${mutation}}`)
+      })
       .then(result => {
         return Object.values(result)[0];
       })
@@ -26,11 +25,11 @@ class DeleteOne {
   }
 
   buildMutation(entity) {
-    return `
+    return Promise.resolve(`
       delete${this.entityInfo.entityName}(id: "${entity.id}") {
         id
       }
-`
+    `);
   }
 }
 

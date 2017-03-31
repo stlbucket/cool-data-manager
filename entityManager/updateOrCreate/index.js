@@ -1,5 +1,7 @@
+const Promise = require('bluebird')
 const clog = require('fbkt-clog');
-const fieldList = require('../fieldList');
+const buildInputFieldList  = require('../fields/buildInputList');
+const buildOutputFieldList = require('../fields/buildOutputList');
 
 class UpdateOrCreate {
   constructor(entityInfo, client) {
@@ -10,7 +12,10 @@ class UpdateOrCreate {
   _method(entity) {
     const mutation = `{${this.buildMutation(entity)}}`;
 
-    return this.client.mutate(mutation)
+    return this.buildMutation(entity)
+      .then(mutation => {
+        return this.client.mutate(`{${mutation}}`)
+      })
       .then(result => {
         return Object.values(result)[0];
       })
@@ -19,26 +24,32 @@ class UpdateOrCreate {
           [this.entityInfo.entityName]: entity,
           error: error
         });
-      })
+      });
   }
 
   buildMutation(entity) {
-    return `
+    return Promise.props({
+      input: buildInputFieldList(this.entityInfo.fields, entity),
+      output: buildOutputFieldList(this.entityInfo.fields)
+    })
+      .then(fields => {
+        return `
     updateOrCreate${this.entityInfo.entityName} (
       update: {
         id: "${entity.id}",
-        ${fieldList.in(this.entityInfo.fields, entity)}
+        ${fields.input}
       },
       create: {
-        ${fieldList.in(this.entityInfo.fields, entity)}
+        ${fields.input}
       }
     ) {
         id,
         createdAt,
         updatedAt,
-        ${fieldList.out(this.entityInfo.fields)}
+        ${fields.output}
     }
 `
+      });
   }
 }
 

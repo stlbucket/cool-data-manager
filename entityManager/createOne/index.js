@@ -1,5 +1,8 @@
+const Promise = require('bluebird');
 const clog = require('fbkt-clog');
-const fieldList = require('../fieldList');
+
+const buildInputFieldList  = require('../fields/buildInputList');
+const buildOutputFieldList = require('../fields/buildOutputList');
 
 class CreateOne{
   constructor(entityInfo, client){
@@ -8,8 +11,10 @@ class CreateOne{
   }
 
   _method(entity){
-    const mutation = `{${this.buildMutation(entity)}}`;
-    return this.client.mutate(mutation)
+    return Promise.resolve(this.buildMutation(entity))
+      .then(mutation => {
+        return this.client.mutate(`{${mutation}}`)
+      })
       .then(result => {
         return result[`create${this.entityInfo.entityName}`];
       })
@@ -18,22 +23,27 @@ class CreateOne{
           [this.entityInfo.entityName]: entity,
           error: error,
         });
-        console.log('FAILING MUTATION', mutation);
         throw error;
       })
   }
 
   buildMutation(entity){
-    return `
-      create${this.entityInfo.entityName}(
-        ${fieldList.in(this.entityInfo.fields, entity)}
-      ) {
-        id,
-        createdAt,
-        updatedAt,
-        ${fieldList.out(this.entityInfo.fields)}
-      },
+    return Promise.props({
+      input: buildInputFieldList(this.entityInfo.fields, entity),
+      output: buildOutputFieldList(this.entityInfo.fields)
+    })
+      .then(fields => {
+        return `
+          create${this.entityInfo.entityName}(
+            ${fields.input}
+          ) {
+            id,
+            createdAt,
+            updatedAt,
+            ${fields.output}
+          },
 `
+      })
   }
 }
 

@@ -1,3 +1,4 @@
+const Promise = require('bluebird');
 const clog = require('fbkt-clog');
 
 class CreateBatch {
@@ -8,9 +9,10 @@ class CreateBatch {
   }
 
   _method(entities) {
-    const mutation = this.applyTemplate(entities);
-
-    return this.client.mutate(mutation)
+    return this.applyTemplate(entities)
+      .then(mutation => {
+        return this.client.mutate(mutation)
+      })
       .then(result => {
         return Object.values(result);
       })
@@ -23,20 +25,25 @@ class CreateBatch {
       });
   }
 
-  applyTemplate(things) {
-    const mutationSet = things.reduce(
-      (acc, thing, index) => {
-        const thisMutation = `${this.entityInfo.entityName}_${index}: ${this.createOne(thing)},
-        `;
-        return acc.concat(thisMutation)
+  applyTemplate(entities) {
+    return Promise.reduce(
+      entities,
+      (acc, entity, index) => {
+        return this.createOne(entity)
+          .then(entityMutation => {
+            const thisMutation = `${this.entityInfo.entityName}_${index}: ${entityMutation},
+            `;
+            return acc.concat(thisMutation)
+          })
       },
       ''
-    );
-
-    return `{
-    ${mutationSet}
-    }
-  `;
+    )
+    .then(mutationSet => {
+      return `{
+        ${mutationSet}
+        }
+      `;
+    });
   }
 }
 
