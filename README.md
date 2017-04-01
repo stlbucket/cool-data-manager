@@ -173,4 +173,72 @@ describe.only(__filename, function () {
 });
 ```
 
+```
+~~~~~~~~~~~~ EXECUTING GRAPH COOL MUTATION ~~~~~~~~~~~~
+{
+  createThing(
+    stringRequired: "737634ab-8f4d-4595-bf02-13a411f67a02",
+    stringData: "737634ab-8f4d-4595-bf02-13a411f67a02",
+    intData: 1,
+    enumData: One,
+    floatData: 1.2345,
+    booleanData: true,
+    dateTimeData: "2017-04-01T02:21:07Z",
+    otherThing: {
+    stringData: "OTHER THING DATA",
+    },
+      yetAnotherThings: [
+        {
+
+    stringData: "YET MORE",
+        },{
+
+    stringData: "Still Yet MOre evEN",
+        }
+      ],
+
+  ) {
+    id,
+    createdAt,
+    updatedAt,
+       stringRequired,
+         stringData,
+         intData,
+         enumData,
+         floatData,
+         booleanData,
+         dateTimeData,
+      otherThing {
+                 stringData,
+
+            },
+            yetAnotherThings {
+                 stringData,
+
+            },
+
+  },
+}
+____________ END EXECUTING GRAPH COOL MUTATION ____________
+
+
+~~~~~~~~~~~~ THING ~~~~~~~~~~~~
+{ updatedAt: '2017-04-01T02:21:08.000Z',
+  enumData: 'One',
+  booleanData: true,
+  dateTimeData: '2017-04-01T02:21:07.000Z',
+  yetAnotherThings:
+   [ { stringData: 'YET MORE' },
+     { stringData: 'Still Yet MOre evEN' } ],
+  floatData: 1.2345,
+  id: 'cj0ymsx4erc2l01853i8nd3xv',
+  intData: 1,
+  otherThing: { stringData: 'OTHER THING DATA' },
+  createdAt: '2017-04-01T02:21:08.000Z',
+  stringRequired: '737634ab-8f4d-4595-bf02-13a411f67a02',
+  stringData: '737634ab-8f4d-4595-bf02-13a411f67a02' }
+____________ END THING ____________
+
+    ✓ should create one thing and delete it (1466ms)
+```
 ... it can already do quite a bit more, with a few more features before it's done.  check out the <a href="https://github.com/stlbucket/cool-data-manager/tree/master/test/thing">thing tests</a>
