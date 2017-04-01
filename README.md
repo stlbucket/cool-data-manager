@@ -54,9 +54,9 @@ module.exports = client
 
 # CoolDataManager - Thing, OtherThing and YetAnotherThing 
 ```
-const CoolDataManager = require('../../src/coolDataManager');
-const CoolRelation = require('../../src/coolRelation');
-const CoolCollection = require('../../src/coolCollection');
+const CoolDataManager = require('cool-data-manager').CoolDataManager;
+const CoolRelation = require('cool-data-manager').CoolRelation;
+const CoolCollection = require('cool-data-manager').CoolCollection;
 
 const client = require('../client');
 
