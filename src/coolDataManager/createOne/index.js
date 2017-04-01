@@ -37,14 +37,13 @@ class CreateOne{
     })
       .then(fields => {
         return `
-          create${this.entityInfo.entityName}(
-            ${fields.input}
-          ) {
-            id,
-            createdAt,
-            updatedAt,
-            ${fields.output}
-          },
+  create${this.entityInfo.entityName}(${fields.input}
+  ) {
+    id,
+    createdAt,
+    updatedAt,
+    ${fields.output}
+  },
 `
       })
   }
