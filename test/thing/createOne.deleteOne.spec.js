@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 const moment = require('moment');
 const entityManager = require('./index');
 
-describe.only(__filename, function () {
+describe(__filename, function () {
   it('should create one thing and delete it', function (done) {
     this.timeout(10000);
     const testId     = uuid.v4();
