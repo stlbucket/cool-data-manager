@@ -172,3 +172,5 @@ describe.only(__filename, function () {
   });
 });
 ```
+
+... it can already do quite a bit more, with a few more features before it's done.  check out the <a href="https://github.com/stlbucket/cool-data-manager/tree/master/test/thing">thing tests</a>
