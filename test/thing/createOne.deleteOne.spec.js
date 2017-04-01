@@ -50,6 +50,11 @@ describe.only(__filename, function () {
         expect(moment.utc(thing.dateTimeData).format()).to.equal(testEntity.dateTimeData);
         expect(thing.otherThing).to.be.an('object');
         expect(thing.otherThing.stringData).to.equal(testEntity.otherThing.stringData);
+        expect(thing.yetAnotherThings).to.be.an('array');
+        expect(thing.yetAnotherThings.length).to.equal(testEntity.yetAnotherThings.length);
+        expect(thing.yetAnotherThings[0]).to.be.an('object');
+        expect(thing.yetAnotherThings[0].stringData).to.equal(testEntity.yetAnotherThings[0].stringData);
+        expect(thing.yetAnotherThings[1].stringData).to.equal(testEntity.yetAnotherThings[1].stringData);
         // expect(thing.jsonData.id).to.equal(testEntity.jsonData.id);
         // expect(thing.jsonData.child.id).to.equal(testEntity.jsonData.child.id);
         // clog('CREATE ONE RESULT', thing);

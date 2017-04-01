@@ -4,6 +4,13 @@ const valueWrappers = require('./valueWrappers');
 const CoolRelation = require('../../../coolRelation');
 const CoolCollection = require('../../../coolCollection');
 
+/**
+ *
+ * @param relation
+ * @param relationEntity
+ * @param fieldName
+ * @param parentQuery
+ */
 function buildCoolRelationInputList(relation, relationEntity, fieldName, parentQuery){
   const subEntityInfo = relation.coolDataManager.entityInfo;
   return buildInputList(subEntityInfo.fields, relationEntity)
@@ -15,6 +22,14 @@ function buildCoolRelationInputList(relation, relationEntity, fieldName, parentQ
     })
 }
 
+/**
+ *
+ * @param collection
+ * @param relationCollection
+ * @param fieldName
+ * @param parentQuery
+ * @returns {Bluebird<U2|U1>|Bluebird<U>|Thenable<U>|Bluebird<U[]>}
+ */
 function buildCoolCollectionInputList(collection, relationCollection, fieldName, parentQuery){
   const subEntityInfo = collection.coolDataManager.entityInfo;
   return Promise.mapSeries(
@@ -36,12 +51,27 @@ function buildCoolCollectionInputList(collection, relationCollection, fieldName,
     });
 }
 
+/**
+ *
+ * @param type
+ * @param entity
+ * @param fieldName
+ * @param parentQuery
+ * @returns {Promise.<T>}
+ */
 function buildEntityInputList(type, entity, fieldName, parentQuery){
   const value = valueWrappers[type](entity[fieldName]);
   return Promise.resolve(parentQuery.concat(`
     ${fieldName}: ${value},`))
 }
 
+
+/**
+ *
+ * @param fields
+ * @param entity
+ * @returns {*}
+ */
 function buildInputList(fields, entity) {
   return validateRequiredFields(fields, entity)
     .then((errors) => {

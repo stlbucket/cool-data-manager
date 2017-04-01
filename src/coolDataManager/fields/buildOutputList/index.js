@@ -3,6 +3,30 @@ const clog = require('fbkt-clog');
 const CoolRelation = require('../../../coolRelation');
 const CoolCollection = require('../../../coolCollection');
 
+/**
+ *
+ * @param fieldName
+ * @param type
+ * @param options
+ * @param parentQuery
+ */
+function buildRelationOrCollectionOutputList(fieldName, type, options, parentQuery){
+  const subEntityInfo = type.coolDataManager.entityInfo;
+  return buildOutputList(subEntityInfo.fields, options)
+    .then(subQuery => {
+      return parentQuery.concat(`${fieldName} {
+              ${subQuery}
+            },
+            `);
+    })
+}
+
+/**
+ *
+ * @param fields
+ * @param options
+ * @returns {Bluebird<string>|Bluebird<function(*=, *=)>}
+ */
 function buildOutputList(fields, options)
 {
   const getFields = (options || {}).getFields || [];
@@ -17,16 +41,7 @@ function buildOutputList(fields, options)
     (acc, fieldName) => {
       const field = fields[fieldName];
       if (field.type instanceof CoolRelation || field.type instanceof CoolCollection) {
-        const subEntityInfo = field.type.coolDataManager.entityInfo;
-        return buildOutputList(subEntityInfo.fields, options)
-          .then(subQuery => {
-            return acc.concat(`${fieldName} {
-              ${subQuery}
-            },
-            `);
-          })
-      // } else if (field.type instanceof CoolCollection) {
-      //
+        return buildRelationOrCollectionOutputList(fieldName, field.type, options, acc);
       } else {
         return Promise.resolve(acc.concat(`   ${fieldName},
       `));
