@@ -9,6 +9,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "fbkt-clog": "^1.0.1",
+    "get-graphql-schema": "^1.0.1",
     "lokka": "^1.7.0"
   },
   "devDependencies": {
