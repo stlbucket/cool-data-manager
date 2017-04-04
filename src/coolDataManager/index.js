@@ -40,7 +40,6 @@ function processEntityInfo(entityInfo){
 class CoolDataManager{
   constructor(entityInfo, client, options){
     this.entityInfo = processEntityInfo(entityInfo);
-    clog('THIS ENTITYINFO', this.entityInfo);
     this.client = new ClientWrapper(client, options);
   }
 
