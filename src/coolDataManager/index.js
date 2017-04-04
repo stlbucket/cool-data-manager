@@ -88,6 +88,12 @@ class CoolDataManager{
     return updateOrCreateBatch._method(entities);
   }
 
+  executeQuery(query, queryName) {
+    return this.client.query(query)
+      .then(result => {
+        return queryName ? result[queryName] : result;
+      })
+  }
 }
 
 module.exports = CoolDataManager;
