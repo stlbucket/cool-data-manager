@@ -1,3 +1,5 @@
+const CoolRelation = require('../coolRelation');
+
 const ClientWrapper = require('./clientWrapper');
 const CreateOne = require('./createOne');
 const DeleteOne = require('./deleteOne');
@@ -7,9 +9,38 @@ const GetAll = require('./getAll');
 const UpdateOrCreate = require('./updateOrCreate');
 const UpdateOrCreateBatch = require('./updateOrCreateBatch');
 
+function processEntityInfo(entityInfo){
+  const fields = Object.keys(entityInfo.fields).reduce(
+    (acc, fieldName) => {
+
+      if (entityInfo.fields[fieldName].type instanceof CoolRelation) {
+        return Object.assign(acc, {
+          [fieldName]: entityInfo.fields[fieldName],
+          [`${fieldName}Id`]: {
+            type: 'string',
+            queryExclude: true
+          }
+        })
+      } else {
+        return Object.assign(acc, {
+          [fieldName]: entityInfo.fields[fieldName]
+        })
+      }
+    },
+    {}
+  );
+
+  return {
+    entityName: entityInfo.entityName,
+    entityNamePlural: entityInfo.entityNamePlural,
+    fields: fields
+  };
+}
+
 class CoolDataManager{
   constructor(entityInfo, client, options){
-    this.entityInfo = entityInfo;
+    this.entityInfo = processEntityInfo(entityInfo);
+    clog('THIS ENTITYINFO', this.entityInfo);
     this.client = new ClientWrapper(client, options);
   }
 

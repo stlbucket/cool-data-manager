@@ -42,9 +42,11 @@ function buildOutputList(fields, options)
       const field = fields[fieldName];
       if (field.type instanceof CoolRelation || field.type instanceof CoolCollection) {
         return buildRelationOrCollectionOutputList(fieldName, field.type, options, acc);
-      } else {
+      } else if (field.queryExclude !== true) {
         return Promise.resolve(acc.concat(`   ${fieldName},
       `));
+      } else {
+        return Promise.resolve(acc);
       }
     },
     ''
