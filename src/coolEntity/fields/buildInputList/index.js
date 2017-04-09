@@ -1,8 +1,8 @@
-const Promise                = require('bluebird');
+const Promise = require('bluebird');
 const validateRequiredFields = require('./validateRequiredFields');
-const valueWrappers          = require('./valueWrappers');
-const CoolRelation           = require('../../../coolRelation');
-const CoolCollection         = require('../../../coolCollection');
+const valueWrappers = require('./valueWrappers');
+const CoolRelation = require('../../../coolRelation');
+const CoolCollection = require('../../../coolCollection');
 
 /**
  *
@@ -11,19 +11,15 @@ const CoolCollection         = require('../../../coolCollection');
  * @param fieldName
  * @param parentQuery
  */
-function buildCoolRelationInputList(relation, relationEntity, fieldName, parentQuery) {
-  const subEntityInfo = relation.coolDataManager.entityInfo;
-  if (relationEntity) {
-    return buildInputList(subEntityInfo.fields, relationEntity)
-      .then(subQuery => {
-        return parentQuery.concat(`
+function buildCoolRelationInputList(relation, relationEntity, fieldName, parentQuery){
+  const subEntityInfo = relation.coolEntity.entityInfo;
+  return buildInputList(subEntityInfo.fields, relationEntity)
+    .then(subQuery => {
+      return parentQuery.concat(`
     ${fieldName}: { ${subQuery}
     },
       `);
-      })
-  } else {
-    return parentQuery;
-  }
+    })
 }
 
 /**
@@ -34,29 +30,25 @@ function buildCoolRelationInputList(relation, relationEntity, fieldName, parentQ
  * @param parentQuery
  * @returns {Bluebird<U2|U1>|Bluebird<U>|Thenable<U>|Bluebird<U[]>}
  */
-function buildCoolCollectionInputList(collection, relationCollection, fieldName, parentQuery) {
-  const subEntityInfo = collection.coolDataManager.entityInfo;
-  if (relationCollection) {
-    return Promise.mapSeries(
-      relationCollection,
-      subEntity => {
-        return buildInputList(subEntityInfo.fields, subEntity)
-          .then(subEntity => {
-            return `{
+function buildCoolCollectionInputList(collection, relationCollection, fieldName, parentQuery){
+  const subEntityInfo = collection.coolEntity.entityInfo;
+  return Promise.mapSeries(
+    relationCollection,
+    subEntity => {
+      return buildInputList(subEntityInfo.fields, subEntity)
+        .then(subEntity => {
+          return `{
           ${subEntity}
         }`
-          })
-      }
-    )
-      .then(subQuery => {
-        return parentQuery.concat(`${fieldName}: [
+        })
+    }
+  )
+    .then(subQuery => {
+      return parentQuery.concat(`${fieldName}: [
         ${subQuery}
       ],
       `);
-      });
-  } else {
-    return parentQuery;
-  }
+    });
 }
 
 /**
@@ -67,7 +59,7 @@ function buildCoolCollectionInputList(collection, relationCollection, fieldName,
  * @param parentQuery
  * @returns {Promise.<T>}
  */
-function buildEntityInputList(type, entity, fieldName, parentQuery) {
+function buildEntityInputList(type, entity, fieldName, parentQuery){
   const value = valueWrappers[type](entity[fieldName]);
   return Promise.resolve(parentQuery.concat(`
     ${fieldName}: ${value},`))
@@ -94,7 +86,7 @@ function buildInputList(fields, entity) {
               const field = fields[fieldName];
               const type  = field.type;
 
-              if (type instanceof CoolRelation) {
+              if (type instanceof CoolRelation){
                 return buildCoolRelationInputList(type, entity[fieldName], fieldName, acc);
               } else if (type instanceof CoolCollection) {
                 return buildCoolCollectionInputList(type, entity[fieldName], fieldName, acc);
